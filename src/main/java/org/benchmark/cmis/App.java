@@ -5,16 +5,17 @@ import org.apache.chemistry.opencmis.commons.enums.BindingType;
 
 /**
  * Hello world!
- *
  */
-public class App {
+public class App
+{
 
-	public static void main(String[] args) {
+    public static void main(String[] args)
+    {
 
-		CmisRepository cmis = new CmisRepository("alf01:8080", "admin","admin", BindingType.BROWSER);
-		Session session = cmis.openSession();
+        CmisRepository cmis = new CmisRepository("alf01:8080", "admin", "admin", BindingType.BROWSER);
+        Session session = cmis.openSession();
 
-		System.out.println(session.getRootFolder().getName());
-	}
+        System.out.println(session.getRootFolder().getName());
+    }
 
 }
