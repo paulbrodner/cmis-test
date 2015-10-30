@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -55,6 +58,12 @@ public class FileHelper
             System.out.println("ERROR in getting random file: " + choosenOne);
 
             createRandomFile(destinationFolder);
+        }
+
+        if (getTotalFilesCount() > 0 && (getTotalFilesCount() % 10) == 0)
+        {
+            DateFormat df = new SimpleDateFormat("HH':'mm':'ss");
+            System.out.println(df.format(new Date(System.currentTimeMillis())) + " = Created one bulk of 10 files. Total:" + getTotalFilesCount());
         }
 
         File file = new File(url.getFile());

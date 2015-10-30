@@ -25,30 +25,37 @@ public class Ace198
     {
         session = cmis.openSession();
 
-        //Folder folder = (Folder) session.getObject("b40fe91d-3688-4b16-8775-cdc7b362a701");
-        Folder folder = (Folder) session.getObject("111e4ee0-0738-435f-a56d-baea98510c7a");
+        Folder folder = (Folder) session.getObject("56b90363-fd33-469d-928a-a97610970efc");
+        // Folder folder = (Folder) session.getObject("76eb2043-f799-4792-981f-32b4a6feb1b4");
         System.out.println("Playing on Folder: " + folder.getName());
 
         /*
          * create some DATALOAD prior of testing
          */
-        FileHelper fileHelper = new FileHelper(session);
-        Stopwatch timer = Stopwatch.createStarted();
-        fileHelper.dataPreparation(folder, 2, 1, 5000); // 10000 files
-        timer.stop();
-        System.out.println("Creating Total of #Folders:" + fileHelper.getTotalFolderCount() + " #Files: " + fileHelper.getTotalFilesCount() + " in " + timer);
+        createDataLoad(folder, 2, 2, 1000);
 
         /*
          * Start Benchmarking getChildren()
          */
-        //bechmarkGetChildrens(folder);
+        // bechmarkGetChildrens(folder);
 
         /*
          * Start Benchmarking getDescendants()
          */
-        //bechmarkGetDescendants(folder, 10);
+        // bechmarkGetDescendants(folder, 10);
 
         System.out.println("END");
+    }
+
+    private static void createDataLoad(Folder folder, int depth, int subfolderCount, int filesPerFolder)
+    {
+        FileHelper fileHelper = new FileHelper(session);
+        Stopwatch timer = Stopwatch.createStarted();
+
+        fileHelper.dataPreparation(folder, depth, subfolderCount, filesPerFolder);
+
+        timer.stop();
+        System.out.println("Creating Total of #Folders:" + fileHelper.getTotalFolderCount() + " #Files: " + fileHelper.getTotalFilesCount() + " in " + timer);
     }
 
     @SuppressWarnings("unused")
