@@ -3,6 +3,7 @@ package org.benchmark.cmis;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,15 @@ public class FileHelper
     public Document createRandomFile(Folder destinationFolder)
     {
         int choosenOne = random.nextInt(dataFiles.length - 1);
-        File file = new File(Ace198.class.getClassLoader().getResource("files/" + dataFiles[choosenOne]).getFile());
+        URL url = FileHelper.class.getClassLoader().getResource("files/" + dataFiles[choosenOne]);
+        if (url == null)
+        {
+            System.out.println("ERROR in getting random file: " + choosenOne);
+
+            createRandomFile(destinationFolder);
+        }
+
+        File file = new File(url.getFile());
         String randomFileName = UUID.randomUUID().toString() + "." + Files.getFileExtension(file.getName());
         String mimeType = URLConnection.guessContentTypeFromName(file.getName());
 
@@ -90,7 +99,7 @@ public class FileHelper
             createRandomFile(folderParent);
         }
 
-        for (int s = 1; s <=subfolderCount; s++)
+        for (int s = 1; s <= subfolderCount; s++)
         {
             Folder subfolder = createRandomFolder(folderParent);
 
