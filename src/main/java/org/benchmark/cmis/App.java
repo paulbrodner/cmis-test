@@ -24,17 +24,18 @@ public class App
 
         Folder root = session.getRootFolder();
 
-        CmisAction cmisAction = new CmisAction(session);
         System.out.println("Found the following objects in the ROOT folder:-");
 
-        ItemIterable<CmisObject> children = cmisAction.getChildren(root);
+        ItemIterable<CmisObject> children = root.getChildren();
         for (CmisObject o : children)
         {
             System.out.println(o.getName() + " which is of type " + o.getType().getDisplayName() + " and ID:" + o.getId());
         }
 
-        // specific ID
-        Iterator<CmisObject> pageItems = cmisAction.getChildren("74094c7c-de62-4977-838f-08475b1e910d").iterator();
+        // specific ID       
+        Folder folder = (Folder) session.getObject("da0682a6-6c39-4689-938e-a851d7bc457f");
+        
+        Iterator<CmisObject> pageItems = folder.getChildren().iterator();
         while (pageItems.hasNext())
         {
             CmisObject item = pageItems.next();
