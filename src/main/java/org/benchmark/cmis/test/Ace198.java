@@ -1,7 +1,6 @@
 package org.benchmark.cmis.test;
 
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,7 +28,7 @@ public class Ace198
     public static void main(String[] args) throws URISyntaxException, IOException
     {
         out = new PrintWriter(new BufferedWriter(new FileWriter("report.txt", true)));
-        out.println("New Run");
+        out.println("New Run - one Session");
         session = cmis.openSession();
 
         Folder folder = (Folder) session.getObject("e1f7c1bf-4001-4c03-9f40-ca5916b33ede");
@@ -103,7 +102,7 @@ public class Ace198
         }
         // stop timer
         timer.stop();
-        String info = "It took: " + timer + " for " + String.valueOf(count) + " Childrens on: " + folder.getName();
+        String info = "It took: " + timer + " for " + String.valueOf(count) + " Children on: " + folder.getName();
         out.println(info);
         System.out.println(info);
     }
