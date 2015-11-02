@@ -10,8 +10,10 @@ import java.util.Iterator;
 import org.apache.chemistry.opencmis.client.api.CmisObject;
 import org.apache.chemistry.opencmis.client.api.FileableCmisObject;
 import org.apache.chemistry.opencmis.client.api.Folder;
+import org.apache.chemistry.opencmis.client.api.OperationContext;
 import org.apache.chemistry.opencmis.client.api.Session;
 import org.apache.chemistry.opencmis.client.api.Tree;
+import org.apache.chemistry.opencmis.client.runtime.OperationContextImpl;
 import org.apache.chemistry.opencmis.commons.enums.BindingType;
 import org.benchmark.cmis.CmisRepository;
 import org.benchmark.cmis.FileHelper;
@@ -27,12 +29,26 @@ public class Ace198
 
     public static void main(String[] args) throws URISyntaxException, IOException
     {
+        if (args.length == 0)
+        {
+            System.out.println("Provide root object ID  (i.e.: e1f7c1bf-4001-4c03-9f40-ca5916b33ede");
+            System.exit(0);
+        }
+
         out = new PrintWriter(new BufferedWriter(new FileWriter("report.txt", true)));
         out.println("New Run - one Session");
         session = cmis.openSession();
-
-        Folder folder = (Folder) session.getObject("e1f7c1bf-4001-4c03-9f40-ca5916b33ede");
+        
+        Folder folder = (Folder) session.getObject(args[0]);
         System.out.println("Playing on Folder: " + folder.getName());
+
+        // Create a new CMIS operation context
+        OperationContext cmisOperationContext = new OperationContextImpl();
+        cmisOperationContext.setOrderBy("cmis:name ASC");
+        cmisOperationContext.setIncludeAcls(true);
+        cmisOperationContext.setIncludePolicies(true);
+        cmisOperationContext.setIncludeRelationships(null);
+        session.setDefaultContext(cmisOperationContext);
 
         /*
          * create some DATALOAD prior of testing
