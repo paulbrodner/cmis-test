@@ -1,6 +1,10 @@
 package org.benchmark.cmis.test;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 
@@ -18,33 +22,36 @@ import com.google.common.base.Stopwatch;
 public class Ace198
 {
 
-    static CmisRepository cmis = new CmisRepository("alf01:8080", "admin", "admin", BindingType.BROWSER);
+    static CmisRepository cmis = new CmisRepository("alf05:8080", "admin", "admin", BindingType.BROWSER);
     static Session session;
+    static PrintWriter out;
 
-    public static void main(String[] args) throws FileNotFoundException, URISyntaxException
+    public static void main(String[] args) throws URISyntaxException, IOException
     {
+        out = new PrintWriter(new BufferedWriter(new FileWriter("report.txt", true)));
+        out.println("New Run");
         session = cmis.openSession();
 
-        Folder folder = (Folder) session.getObject("56b90363-fd33-469d-928a-a97610970efc");
-        // Folder folder = (Folder) session.getObject("76eb2043-f799-4792-981f-32b4a6feb1b4");
+        Folder folder = (Folder) session.getObject("e1f7c1bf-4001-4c03-9f40-ca5916b33ede");
         System.out.println("Playing on Folder: " + folder.getName());
 
         /*
          * create some DATALOAD prior of testing
          */
-        createDataLoad(folder, 2, 2, 1000);
+        // createDataLoad(folder, 2, 1, 5000);
 
         /*
          * Start Benchmarking getChildren()
          */
-        // bechmarkGetChildrens(folder);
+        bechmarkGetChildrens(folder);
 
         /*
          * Start Benchmarking getDescendants()
          */
-        // bechmarkGetDescendants(folder, 10);
+        bechmarkGetDescendants(folder, 10);
 
         System.out.println("END");
+        out.close();
     }
 
     private static void createDataLoad(Folder folder, int depth, int subfolderCount, int filesPerFolder)
@@ -75,7 +82,9 @@ public class Ace198
         }
         // stop timer
         timer.stop();
-        System.out.println("It took: " + timer + " for " + String.valueOf(count) + " Descendants on: " + folder.getName());
+        String info = "It took: " + timer + " for " + String.valueOf(count) + " Descendants on: " + folder.getName();
+        out.println(info);
+        System.out.println(info);
     }
 
     @SuppressWarnings("unused")
@@ -94,6 +103,8 @@ public class Ace198
         }
         // stop timer
         timer.stop();
-        System.out.println("It took: " + timer + " for " + String.valueOf(count) + " Childrens on: " + folder.getName());
+        String info = "It took: " + timer + " for " + String.valueOf(count) + " Childrens on: " + folder.getName();
+        out.println(info);
+        System.out.println(info);
     }
 }
