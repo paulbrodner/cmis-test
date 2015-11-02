@@ -27,6 +27,9 @@ public class Ace198
     static Session session;
     static PrintWriter out;
 
+    /*
+     * java -jar cmis-0.0.1-SNAPSHOT-jar-with-dependencies.jar 365393bc-7306-4807-b793-7e27c6bd68bd
+     */
     public static void main(String[] args) throws URISyntaxException, IOException
     {
         if (args.length == 0)
@@ -38,7 +41,7 @@ public class Ace198
         out = new PrintWriter(new BufferedWriter(new FileWriter("report.txt", true)));
         out.println("New Run - one Session");
         session = cmis.openSession();
-        
+
         Folder folder = (Folder) session.getObject(args[0]);
         System.out.println("Playing on Folder: " + folder.getName());
 
